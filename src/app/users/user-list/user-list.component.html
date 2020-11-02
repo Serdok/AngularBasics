@@ -1,1 +1,3 @@
-<p>user-list works!</p>
+<div *ngIf="users">
+  <div class="card" *ngFor="let user of users"> {{ user.login }} </div>
+</div>
