@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,KAAK;EACH,gBAAgB,EAAE,+CAA+C;EACjE,eAAe,EAAE,KAAK;EACtB,mBAAmB,EAAE,aAAa",
+"sources": ["home.component.sass"],
+"names": [],
+"file": "home.component.css"
+}
