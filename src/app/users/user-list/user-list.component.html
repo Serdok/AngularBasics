@@ -1,3 +1,11 @@
-<div *ngIf="users">
-  <div class="card" *ngFor="let user of users"> {{ user.login }} </div>
-</div>
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline" *ngIf="users">
+      <div class="column is-4" *ngFor="let user of users">
+        <div class="card">
+          <div class="card-content"> {{ user.login }} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
