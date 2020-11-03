@@ -13,4 +13,8 @@ export class UserService {
   getUsers(maxUsers: number = 10): Observable<object> {
     return this.httpClient.get(`${this.apiUrl}?per_page=${maxUsers}`);
   }
+
+  getUser(username: string): Observable<object> {
+    return this.httpClient.get(`${this.apiUrl}/${username}`);
+  }
 }

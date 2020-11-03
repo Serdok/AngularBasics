@@ -256,3 +256,76 @@ Contenu de user-list.component.html:
 ```angular2html
 <div class="card" *ngFor="let user of users"> {{ user.login }} </div>
 ```
+
+#### ActivatedRoute
+
+J'ai évoqué préalablement qu'on avait mis *:username* en paramètre de route. On peut donc indiquer un paramètre variable à Angular. Pour récupérer cette variable,
+on utilise le service *ActivatedRoute*. Vu que c'est un service, on doit l'injecter dans le constructeur des composants ou on veut l'intégrer.
+
+Exemple:
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { UserService } from './user.service';
+
+@Component({
+  selector: 'app-user-single',
+  templateUrl: './user-single.component.html',
+  styleUrls: ['./user-single.component.sass']
+})
+export class UserSingleComponent implements OnInit {
+  constructor(private route: ActivatedRoute, private userService: UserService) {
+  }
+}
+```
+
+La variable *route* est maintenant l'interface pour utiliser le service *ActivatedRoute*.
+Le service dispose de propriétés publiques, notemment la propriété *params* qu'on va utiliser.
+La propriété *params* permet de récupérer le contenu des routes après un *:*.
+
+Exemple:
+
+```typescript
+ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      // Fetching the :username part of the route
+      const username = params.username;
+      this.userService.getUser(username)
+        .subscribe(user => this.user = user);
+    });
+}
+```
+
+On note ici aussi la notion de *subscribe* qui indique le travail asynchrone effectué en arrière-plan.
+
+### Utiliser des variables déclarées dans les .ts dans de l'HTML
+
+Angular utilise la notion de **binding** pour pouvoir afficher une variable TS dans de l'HTML sans avoir à rafraîchir la page.
+Il y a deux manières différentes de faire:
+
+##### Lier en "lecture seule"
+On peut lier une variable à de l'HTML en lecture seule, c'est à dire que Angular rafraîchira l'HTML concerné en cas de
+changement de valeur de la variable depuis le TS mais pas en cas de changement par l'utlisateur. On a déjà encontré cette utilisation.
+Pour ce faire, dans l'HTML, on englobe la variable TS par deux accollades {{ x }}. Angular interprètera l'intérieur comme une variable et la changera par son contenu à l'affichage
+de la page.
+
+Exemples:
+```angular2html
+<div>{{ user }}</div>
+<img src="{{ user.avatar_url }}>">
+```
+
+##### Lier en "lecture écriture"
+On peut aussi lier les variables en lecture écriture. Le seul moyen de le faire, c'est de la passer en tant que tag HTML spécifique à Angular.
+Ces tags sont facilement reconnaissables: ils sont entourés de crochets. Ces crochets indiquent à Angular qu'un bind sur la variable doit se faire, et
+qu'il doit se préparer à des modifications dans les deux sens.
+
+Exemples:
+```angular2html
+<img [src]="user.avatar_url">
+<input [(ngModel)]="name">
+```
+
+Pas besoin d'accollades, grâce aux crochets Angular sait qu'il doit attendre une variable TS derrière
